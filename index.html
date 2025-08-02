@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Feliz Cumpleaños, Nunu 💖</title>
+
+  <!-- Google Fonts: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #f9a8d4 0%, #fbb6ce 50%, #fcd34d 100%);
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      margin: 30px 20px;
+      font-size: 3.2rem;
+      font-weight: 600;
+    }
+
+    h2 {
+      font-size: 2.4rem;
+      margin: 40px 0 20px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 20px 30px;
+      font-size: 1.3rem;
+      line-height: 1.6;
+      font-weight: 400;
+    }
+
+    button {
+      padding: 18px 40px;
+      font-size: 1.5rem;
+      background-color: #ec4899;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background-color: #db2777;
+    }
+
+    #play-container {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 40px;
+      cursor: pointer;
+      user-select: none;
+      color: white;
+      font-weight: 600;
+      font-size: 1.3rem;
+    }
+
+    #play-container .arrow {
+      font-size: 1.8rem;
+      animation: bounce 1.5s infinite;
+    }
+
+    #play-container .heart-icon {
+      color: pink;
+      font-size: 1.5rem;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* Corazones flotantes */
+    .hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: pink;
+      transform: rotate(45deg);
+      animation: float 6s linear infinite;
+    }
+
+    .heart::before, .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: pink;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    /* GRID DE FOTOS */
+    .gallery-container {
+      width: 90%;
+      max-width: 1000px;
+      margin: 40px auto 60px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      position: relative;
+    }
+
+    .photo-card {
+      cursor: pointer;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      background: white;
+      transition: transform 0.4s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .photo-card img {
+      width: 100%;
+      display: block;
+      border-radius: 15px;
+      height: 250px;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    /* CONTENEDOR DE FOTO AGRANDADA + TEXTO */
+    .expanded-view {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80vw;
+      max-width: 900px;
+      height: 60vh;
+      background: rgba(255 255 255 / 0.95);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      padding: 25px 35px;
+      color: #000;
+      z-index: 1000;
+      animation: expandFadeIn 0.5s ease forwards;
+    }
+
+    .expanded-view img {
+      max-height: 100%;
+      max-width: 50%;
+      border-radius: 20px;
+      object-fit: cover;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .expanded-text {
+      flex: 1;
+      font-size: 1.4rem;
+      text-align: left;
+      overflow-y: auto;
+      max-height: 100%;
+      font-weight: 500;
+    }
+
+    /* Botón cerrar */
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #ec4899;
+      font-weight: 700;
+      transition: color 0.3s;
+      user-select: none;
+    }
+
+    .close-btn:hover {
+      color: #db2777;
+    }
+
+    /* Animación */
+    @keyframes expandFadeIn {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -40%) scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    /* Otros textos y botones */
+    p, h1, h2, button, #play-container {
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hearts"></div>
+
+  <h1>Feliz Cumpleaños, Nunuu 🎉</h1>
+  <p>Hoy celebramos todo lo que sos y lo afortunado que soy de tenerte. Te amo con todo mi corazón ❤️</p>
+
+  <!-- Contenedor con flecha, texto y corazón -->
+  <div id="play-container" onclick="togglePlay()" role="button" tabindex="0" aria-label="Reproducir o pausar la canción">
+    <span class="arrow">➡️</span>
+    <span>Presiona acá</span>
+    <span class="heart-icon">❤️</span>
+  </div>
+
+  <!-- Botón que cambiará de reproducir a pausar -->
+  <button id="btnPlay" onclick="togglePlay()">🎵 Te la dedico</button>
+  <audio id="mySong" src="cancion.mp3"></audio>
+
+  <h2>📸 Alguno de nuestros momentos</h2>
+
+  <div class="gallery-container" id="gallery">
+
+    <!-- Las fotos estarán aquí generadas por JS -->
+
+  </div>
+
+  <!-- Contenedor expandido (invisible al principio) -->
+  <div id="expandedView" class="expanded-view" style="display:none;">
+    <button class="close-btn" aria-label="Cerrar galería">&times;</button>
+    <img id="expandedImg" src="" alt="Foto ampliada" />
+    <div class="expanded-text" id="expandedText"></div>
+  </div>
+
+  <script>
+    // Música
+    const song = document.getElementById("mySong");
+    const btnPlay = document.getElementById("btnPlay");
+    const playContainer = document.getElementById("play-container");
+
+    function togglePlay() {
+      if (song.paused) {
+        song.play();
+      } else {
+        song.pause();
+      }
+    }
+
+    song.addEventListener("play", () => {
+      btnPlay.textContent = "⏸️ Pausar canción";
+      playContainer.style.display = "none";
+    });
+
+    song.addEventListener("pause", () => {
+      btnPlay.textContent = "🎵 Te la dedico";
+      playContainer.style.display = "inline-flex";
+    });
+
+    // Corazones flotantes
+    const heartsContainer = document.querySelector('.hearts');
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = 4 + Math.random() * 3 + 's';
+      heartsContainer.appendChild(heart);
+      setTimeout(() => heart.remove(), 7000);
+    }
+    setInterval(createHeart, 300);
+
+    // Fotos y textos para la galería
+    const photos = [
+      {src:"imagenes/foto1.jpg", text:"En ese momento nos estabamos conociendo pero yo ya sabia que eras unica y queria tenerte en mi vida"},
+      {src:"imagenes/foto2.jpg", text:"En ese momento estaba muy nervioso de ese viaje pero el simple hecho de pasar 4 dias a tu lado hicieron que nada importara mas."},
+      {src:"imagenes/foto3.jpg", text:"Jamas pense que algo tan simple como ir al autodromo a tomar mates sea tan lindo hasta que lo hice con vos, me hizo entender que todo junto a vos es mas lindo."},
+      {src:"imagenes/foto4.jpg", text:"Otra cosa que no solia hacer mucho era sonreir tanto en las fotos, y me di cuenta que desde que apareciste en mi vida lo primero que me sale no solo en las fotos sino en el dia a dia es una sonrisa."},
+      {src:"imagenes/foto5.jpg", text:"Desde que te conoci lo que mas disfruto es verte feliz y sonriendo."},
+      {src:"imagenes/foto6.jpg", text:"Me histe la persona mas feliz del mundo,gracias❤️."},
+      {src:"imagenes/foto7.jpg", text:"Esta es despues de la que podriamos llamar nuestra primer ''pelea'' y quiero que sepas que pase lo que pase siempre voy a entenderte y ponerme de tu lado porque te amo y sos lo mas importante que tengo."},
+      {src:"imagenes/foto8.jpg", text:"Esta es solo para recordar la paliza que te di ese dia(y por tus ojitos hermososs😍)."}
+    ];
+
+    // Crear galería
+    const gallery = document.getElementById('gallery');
+    photos.forEach((photo, i) => {
+      const div = document.createElement('div');
+      div.classList.add('photo-card');
+      div.tabIndex = 0; // para accesibilidad teclado
+      div.setAttribute('role', 'button');
+      div.setAttribute('aria-label', `Abrir foto: ${photo.title}`);
+
+      const img = document.createElement('img');
+      img.src = photo.src;
+      img.alt = photo.title;
+
+      div.appendChild(img);
+      gallery.appendChild(div);
+
+      // Evento click para ampliar
+      div.addEventListener('click', () => openExpanded(i));
+      div.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openExpanded(i);
+        }
+      });
+    });
+
+    const expandedView = document.getElementById('expandedView');
+    const expandedImg = document.getElementById('expandedImg');
+    const expandedText = document.getElementById('expandedText');
+    const closeBtn = expandedView.querySelector('.close-btn');
+
+    function openExpanded(index) {
+      const photo = photos[index];
+      expandedImg.src = photo.src;
+      expandedImg.alt = photo.title;
+      expandedText.textContent = photo.text;
+      expandedView.style.display = 'flex';
+      document.body.style.overflow = 'hidden'; // Evita scroll detrás
+    }
+
+    closeBtn.addEventListener('click', () => {
+      expandedView.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    });
+
+    // Cerrar con ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && expandedView.style.display === 'flex') {
+        expandedView.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+    });
+  </script>
+</body>
+</html>
